@@ -20,7 +20,7 @@ export const fetchWeatherDataForCity = createAsyncThunk(
     'weather/fetchWeatherDataForCity',
     async (city, { rejectWithValue }) => {
         try {
-            const weatherResponse = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=no&alerts=no`);
+            const weatherResponse = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=no&alerts=no`);
 
             const country = weatherResponse.data.location.country
 
