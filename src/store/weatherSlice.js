@@ -13,7 +13,7 @@ function loadCitiesFromLocalStorage() {
     return citiesData ? JSON.parse(citiesData) : [];
 }
 
-const API_KEY = '03fc9f292e854987998173950241104'
+const API_KEY = '03fc9f292e85498799'
 
 // Async thunk to fetch weather data for a city
 export const fetchWeatherDataForCity = createAsyncThunk(
