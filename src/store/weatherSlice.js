@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+
 const CITIES_STORAGE_KEY = 'weatherCities';
 
 function saveCitiesToLocalStorage(cities) {
@@ -13,14 +14,14 @@ function loadCitiesFromLocalStorage() {
     return citiesData ? JSON.parse(citiesData) : [];
 }
 
-const API_KEY = '03fc9f292e854987998173950241104'
+const API_KEY = import.meta.env.VITE_REACT_APP_WEATHERAPI_API_KEY;
 
 // Async thunk to fetch weather data for a city
 export const fetchWeatherDataForCity = createAsyncThunk(
     'weather/fetchWeatherDataForCity',
-    async (city, { rejectWithValue }) => {
+    async (location, { rejectWithValue }) => {
         try {
-            const weatherResponse = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=no&alerts=no`);
+            const weatherResponse = await axios.get(`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${location}&days=7&aqi=no&alerts=no`);
 
             const country = weatherResponse.data.location.country
 
@@ -41,7 +42,6 @@ export const fetchWeatherDataForCity = createAsyncThunk(
 
 const initialState = {
     cities: loadCitiesFromLocalStorage(),
-    forecasts: {},
     loading: false,
     error: null,
 };
@@ -62,21 +62,22 @@ const weatherSlice = createSlice({
                 state.loading = true;
             })
             .addCase(fetchWeatherDataForCity.fulfilled, (state, action) => {
-                const existingIndex = state.cities.findIndex(city => city.weather.location.name === action.meta.arg);
-                if (existingIndex !== -1) {
-                    state.cities[existingIndex] = {
-                        name: action.meta.arg,
-                        weather: action.payload
-                    };
+                const cityName = action.meta.arg;
+                const cityIndex = state.cities.findIndex(city => city.name.toLowerCase() === cityName);
+                const cityData = {
+                    name: cityName,
+                    weather: action.payload
+                };
+
+                if (cityIndex !== -1) {
+                    state.cities[cityIndex] = cityData;
                 } else {
-                    state.cities.push({
-                        name: action.meta.arg,
-                        weather: action.payload
-                    });
+                    state.cities.push(cityData);
                 }
                 saveCitiesToLocalStorage(state.cities);
                 state.loading = false;
             })
+
             .addCase(fetchWeatherDataForCity.rejected, (state, action) => {
                 state.error = action.error.message;
                 state.loading = false;

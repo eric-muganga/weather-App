@@ -4,6 +4,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  options: {
+    safelist: [
+      /^Mui/,  // Whitelist Material-UI classes
+    ],
+  },
   theme: {
     extend: {},
   },

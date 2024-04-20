@@ -5,7 +5,7 @@ import { MdSunnySnowing } from "react-icons/md";
 export default function Header() {
   return (
     <div className="justify-between bg-gray-100  py-3 sticky top-0 shadow-md">
-      <div className="max-w-3xl mx-auto flex gap-2 items-center justify-between px-2">
+      <div className="max-w-5xl mx-auto flex gap-2 items-center justify-between px-2">
         <p className="flex items-center justify-center gap-2">
           <Link className="font-bold text-lg " to="/">
             Weather App

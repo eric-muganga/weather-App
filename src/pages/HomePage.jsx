@@ -106,9 +106,7 @@ export default function HomePage() {
       <Header />
       <SubHeader openDrawer={openDrawer} />
       <AddCityDrawer isOpen={open} onClose={closeDrawer} />
-
       <WeatherDashboard />
-
       <Footer />
     </>
   );
